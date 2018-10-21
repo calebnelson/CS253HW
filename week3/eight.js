@@ -14,7 +14,7 @@ const filter_book = (str_data, func) => {
 }
 
 const remove_stop_words = (word_list, func) => {
-  const stop_words = fs.readFileSync('./stop_words.txt', 'utf8').toLowerCase().split(",")
+  const stop_words = fs.readFileSync('../stop_words.txt', 'utf8').toLowerCase().split(",")
   func(word_list.filter(word => !stop_words.includes(word) && word.length > 1), sort)
 }
 
@@ -50,6 +50,4 @@ const no_op = (func) => {
   return
 }
 
-module.exports = () => {
-  read_file("./pride-and-prejudice.txt", filter_book)
-}
+read_file(process.argv[2], filter_book)

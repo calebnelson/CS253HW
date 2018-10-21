@@ -10,11 +10,11 @@ global.words = {}
 global.top_words = []
 
 const read_book = (full_path) => {
-  book = fs.readFileSync(full_path.concat('pride-and-prejudice.txt'), 'utf8').toLowerCase().split(/[^a-zA-Z]/);
+  book = fs.readFileSync(full_path, 'utf8').toLowerCase().split(/[^a-zA-Z]/);
 }
 
-const read_stop_words = (full_path) => {
-  stop_words = fs.readFileSync(full_path.concat('stop_words.txt'), 'utf8').toLowerCase().split(",");
+const read_stop_words = () => {
+  stop_words = fs.readFileSync('../stop_words.txt', 'utf8').toLowerCase().split(",");
 }
 
 const create_word_map = () => {
@@ -46,10 +46,8 @@ const print_top_N = n => {
   }));
 }
 
-module.exports = () => {
-  read_book("./");
-  read_stop_words("./");
-  create_word_map();
-  create_top_words();
-  print_top_N(25);
-}
+read_book(process.argv[2]);
+read_stop_words();
+create_word_map();
+create_top_words();
+print_top_N(25);

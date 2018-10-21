@@ -21,14 +21,13 @@ def wf_print(wordfreq):
 		wf_print(wordfreq[1:]) 
 
 stop_words = set(open('../stop_words.txt').read().split(','))
-unfiltered_words = re.findall('[a-z]{2,}', open('../pride-and-prejudice.txt').read().lower())
+unfiltered_words = re.findall('[a-z]{2,}', open(sys.argv[1]).read().lower())
 words = [word for word in unfiltered_words if not word in stop_words and len(word)>1]
 word_freqs = {} 
 #Theoretically, we would just call count(words, word_freqs) 
 #Try doing that and see what happens. 
 for i in range(0, len(words), RECURSION_LIMIT):
-  word_freqs = Y(cnt)(words[i:i+RECURSION_LIMIT])(word_freqs)
-  #count(words[i:i+RECURSION_LIMIT], stop_words, word_freqs) 
+  word_freqs = Y(cnt)(words[i:i+RECURSION_LIMIT])(word_freqs) 
 
 
 wf_print(sorted(word_freqs.items(), key=operator.itemgetter(1) , reverse=True)[:25])

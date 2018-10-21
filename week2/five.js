@@ -4,13 +4,13 @@ const read_data = (full_path) => {
   require.extensions['.txt'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
   };
-  book = fs.readFileSync(full_path.concat('pride-and-prejudice.txt'), 'utf8').toLowerCase().split(/[^a-zA-Z]/);
-  stop_words = fs.readFileSync(full_path.concat('stop_words.txt'), 'utf8').toLowerCase().split(",");
+  book = fs.readFileSync(full_path, 'utf8').toLowerCase().split(/[^a-zA-Z]/);
+  stop_words = fs.readFileSync('../stop_words.txt', 'utf8').toLowerCase().split(",");
   return {book, stop_words}
 }
 
 const create_word_map = () => {
-  const data = read_data("./");
+  const data = read_data(process.argv[2]);
   return data.book.reduce((words, word) => {
     if (!(data.stop_words.includes(word)) && word.length > 1){
       if (words[word] === undefined){
@@ -41,6 +41,4 @@ const print_top_N = n => {
   }));
 }
 
-module.exports = () => {
-  print_top_N(25);
-}
+print_top_N(25);
