@@ -52,8 +52,8 @@ class DataStorage{
     
     init(wf, swf){
         this.stopWordFilter = swf;
-        wf.addLoadEvent(this.load)
-        wf.addDoWorkEvent(this.produceWords)
+        wf.addLoadEvent(this.load.bind(this))
+        wf.addDoWorkEvent(this.produceWords.bind(this))
     };
 }
 
@@ -63,7 +63,7 @@ class StopWordFilter{
     }
     
     init(wf){
-        wf.addLoadEvent(this.load);
+        wf.addLoadEvent(this.load.bind(this));
     }
     
     load(){
@@ -82,42 +82,42 @@ class WordFrequencyCounter{
     }
     
     init(wf, ds){
-        ds.addWordEvent(this.increment)
-        wf.addEndEvent(this.printFreqs)
+        ds.addWordEvent(this.increment.bind(this))
+        wf.addEndEvent(this.printFreqs.bind(this))
     }
     
     increment(word){
-        if (this.word_freqs[word] === undefined){
-            this.word_freqs = {
-                ...this.word_freqs,
+        if (this.wordFreqs[word] === undefined){
+            this.wordFreqs = {
+                ...this.wordFreqs,
                 [word]: 1
             }
         }
         else{
-            this.word_freqs[word] = this.word_freqs[word] + 1
+            this.wordFreqs[word] = this.wordFreqs[word] + 1
         }
     }
     
     printFreqs(){
-        console.log(Object.keys(this.word_freqs).map(
-            key => { return { key: key, value: this.word_freqs[key] }; }
+        console.log(Object.keys(this.wordFreqs).map(
+            key => { return { key: key, value: this.wordFreqs[key] }; }
             ).sort((p1, p2) => p2.value - p1.value).slice(0,25).map(word => 
             word.key.concat(" - ").concat(word.value)))
     }
 }
 
-class zCounter(){
+class zCounter{
     constructor(){
         this.wordFreqs = []
     }
     
     init(wf, ds){
-        ds.addWordEvent(this.increment)
-        wf.addEndEvent(this.printFreqs)
+        ds.addWordEvent(this.increment.bind(this))
+        wf.addEndEvent(this.printFreqs.bind(this))
     }
     
     increment(word){
-        if (!this.wordFreqs.includes(word)){
+        if (word.indexOf("z") > -1 && !this.wordFreqs.includes(word)){
             this.wordFreqs.push(word)
         }
     }
