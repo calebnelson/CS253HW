@@ -1,9 +1,8 @@
 const plugin = require("./plugin")
 
+//load plugins
 const words = plugin.words
 const frequencies = plugin.frequencies
-const word_freqs = frequencies.top25(words.extract_words(process.argv[2]))
+const printer = plugin.printer
 
-console.log(word_freqs.map(word => {
-  return(word.key.concat(" - ").concat(word.value));
-}))
+printer.print(frequencies.top25(words.extract_words(process.argv[2])))
